@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.taskinspectortest.util.ToastController
+import com.example.taskinspectortest.worker.InitialWorker
+import com.example.taskinspectortest.worker.OtherWorker
 import com.example.taskinspectortest.worker.SimpleAlarmReceiver
 import com.example.taskinspectortest.worker.SimpleJobService
 import com.example.taskinspectortest.worker.SimpleWorker
@@ -47,11 +49,20 @@ fun TaskInspectorScreen() {
     ) {
         // --- 1. Workers (WorkManager) ---
         Button(onClick = {
+            val initialRequest =
+                OneTimeWorkRequestBuilder<InitialWorker>().addTag("InitialWorkTag").build()
+            val otherRequest =
+                OneTimeWorkRequestBuilder<OtherWorker>().addTag("InitialWorkTag").build()
             val workRequest = OneTimeWorkRequestBuilder<SimpleWorker>().addTag("SimpleWorkTag")
                 .setInitialDelay(2, TimeUnit.SECONDS) // 2秒後に開始
                 .build()
 
-            WorkManager.getInstance(context).enqueue(workRequest)
+            WorkManager.getInstance(context)
+                .beginWith(initialRequest)
+                .then(workRequest)
+                .then(otherRequest)
+                .enqueue()
+            
             toastController.showLatestToast(message = "Worker Enqueued: SimpleWorker")
         }) {
             Text("1. Schedule Worker (WorkManager)")
