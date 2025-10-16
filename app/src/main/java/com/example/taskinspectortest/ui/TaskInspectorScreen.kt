@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.PowerManager
+import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -102,6 +103,12 @@ fun TaskInspectorScreen() {
                 toastController.showLatestToast(message = "Alarm Set: RTC_WAKEUP (Exact)")
             } else {
                 toastController.showLatestToast(message = "Cannot schedule exact alarms. Check permissions/settings.")
+                // 権限がない場合は設定画面へ誘導
+                toastController.showLatestToast(message = "Exact alarm permission is required. Opening settings...")
+                // 設定画面を開くためのIntentを作成
+                Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).also {
+                    context.startActivity(it)
+                }
             }
         }) {
             Text("3. Schedule Alarm (AlarmManager)")

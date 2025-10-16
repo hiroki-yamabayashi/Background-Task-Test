@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
@@ -28,6 +27,10 @@
         <service
             android:name=".worker.SimpleJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+        <receiver
+            android:name=".worker.SimpleAlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
