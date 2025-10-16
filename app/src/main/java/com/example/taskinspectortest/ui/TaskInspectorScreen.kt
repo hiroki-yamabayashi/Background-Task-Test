@@ -104,8 +104,6 @@ fun TaskInspectorScreen() {
             } else {
                 toastController.showLatestToast(message = "Cannot schedule exact alarms. Check permissions/settings.")
                 // 権限がない場合は設定画面へ誘導
-                toastController.showLatestToast(message = "Exact alarm permission is required. Opening settings...")
-                // 設定画面を開くためのIntentを作成
                 Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).also {
                     context.startActivity(it)
                 }
